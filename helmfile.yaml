@@ -1,0 +1,24 @@
+---
+helmDefaults:
+  wait: true
+  createNamespace: true
+
+environments:
+  prod:
+    kubeContext: prod
+    values:
+      - _base_url: "tibeer.de"
+      - _cluster_issuer: "production"
+  staging:
+    kubeContext: staging
+    values:
+      - _base_url: "staging.tibeer.de"
+      - _cluster_issuer: "staging"
+  dev:
+    kubeContext: dev
+    values:
+      - _base_url: "dev.tibeer.de"
+      - _cluster_issuer: "staging"
+
+helmfiles:
+  - ./*/helmfile.yaml

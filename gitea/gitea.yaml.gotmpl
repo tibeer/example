@@ -1,0 +1,63 @@
+---
+image:
+  registry: codeberg.org
+  repository: forgejo/forgejo
+  tag: '1.21'
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: "{{ .Values._cluster_issuer }}"
+  hosts:
+    - host: "{{ .Values.sub_domain }}.{{ .Values._base_url }}"
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: gitea-tls
+      hosts:
+        - "{{ .Values.sub_domain }}.{{ .Values._base_url }}"
+
+persistence:
+  size: 1Gi
+
+service:
+  ssh:
+    annotations:
+      metallb.universe.tf/address-pool: pool
+      metallb.universe.tf/allow-shared-ip: default
+    type: LoadBalancer
+    port: 30022
+
+gitea:
+  admin:
+    username: <username>
+    password: <password>
+    email: <email>
+  config:
+    server:
+      SSH_PORT: 30022
+      SSH_LISTEN_PORT: 30022
+    service:
+      DISABLE_REGISTRATION: true
+
+redis-cluster:
+  enabled: true
+  persistence:
+    size: 1Gi
+
+postgresql-ha:
+  enabled: false
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        postgresPassword: <postgresPassword>
+        password: <password>
+  primary:
+    resources: null
+    persistence:
+      size: 1Gi

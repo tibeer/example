@@ -1,0 +1,31 @@
+---
+environments:
+  prod:
+    values:
+      - values.yaml
+  staging:
+    values:
+      - values.yaml
+  dev:
+    values:
+      - values.yaml
+---
+repositories:
+  - name: forgejo
+    url: codeberg.org/forgejo-contrib
+    oci: true
+  - name: gitea-charts
+    url: https://dl.gitea.com/charts/
+
+releases:
+  - name: gitea
+    namespace: gitea
+    installed: true
+    chart: forgejo/forgejo
+    version: ~0.0.0
+    labels:
+      app: gitea
+    values:
+      - gitea.yaml.gotmpl
+    secrets:
+      - secrets.gitea.yaml

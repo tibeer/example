@@ -1,0 +1,24 @@
+---
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "{{ .Values._cluster_issuer }}"
+  hosts:
+    - host: "{{ .Values.sub_domain }}.{{ .Values._base_url }}"
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: hedgedoc-tls
+      hosts:
+        - "{{ .Values.sub_domain }}.{{ .Values._base_url }}"
+
+env:
+  CMD_DOMAIN: "{{ .Values.sub_domain }}.{{ .Values._base_url }}"
+  CMD_PROTOCOL_USESSL: true
+
+mariadb:
+  primary:
+    persistence:
+      size: 1Gi

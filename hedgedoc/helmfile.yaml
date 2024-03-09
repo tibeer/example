@@ -1,0 +1,29 @@
+---
+environments:
+  prod:
+    values:
+      - values.yaml
+  staging:
+    values:
+      - values.yaml
+  dev:
+    values:
+      - values.yaml
+---
+repositories:
+  - name: tibeer
+    url: ghcr.io/tibeer
+    oci: true
+
+releases:
+  - name: hedgedoc
+    namespace: hedgedoc
+    installed: true
+    chart: tibeer/hedgedoc
+    version: ~0.1.0
+    labels:
+      app: hedgedoc
+    values:
+      - hedgedoc.yaml.gotmpl
+    secrets:
+      - secrets.hedgedoc.yaml

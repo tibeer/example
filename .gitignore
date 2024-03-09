@@ -1,0 +1,4 @@
+# helm secret decrypted files
+decrypted.*
+# age secret keys
+*.key
